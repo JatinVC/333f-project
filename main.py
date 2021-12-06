@@ -249,7 +249,7 @@ def main():
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_b and start and end:
                     pass
-                    # bfs(lambda: draw(surface, grid), grid, start, end)
+                    bfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
 
                 if event.key==pygame.K_c:
                     start=None
@@ -260,7 +260,7 @@ def main():
                      leave(lambda: draw(surface, grid),grid, start, end)
                     
                 if event.key==pygame.K_d and start and node:
-                    dijkstra(lambda: draw(surface, grid),grid, start, end)
+                    dijkstra(lambda: draw(surface, grid),grid, start, end, message_box, construct_path)
                     
                 if event.key==pygame.K_a and start and node:
                     pass

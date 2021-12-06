@@ -1,13 +1,12 @@
 import sys
 # to import stuff from main.py
 sys.path.append('./')
-from main import message_box, construct_path
 import time
 
 BLACK = (0, 0, 0)
 WHITE=(255,255,255)
 
-def dijkstra(draw, grid, start, end):
+def dijkstra(draw, grid, start, end, message_box, construct_path):
     rowNum=[-1, 1,0,0]
     colNum=[0 ,0 ,-1 ,1]
     
