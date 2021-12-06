@@ -265,6 +265,12 @@ def main():
                 if event.key==pygame.K_a and start and node:
                     pass
                     # astar(lambda: draw(surface, grid),grid, start, end)
+                if event.key == pygame.K_i and start and node:
+                    pass
+                if event.key == pygame.K_u and start and node:
+                    pass
+                if event.key == pygame.K_d and start and node:
+                    pass
     pygame.quit()
     
 
