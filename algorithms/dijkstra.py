@@ -73,7 +73,7 @@ def dijkstra(draw, grid, start, end, message_box, construct_path):
             col=current.col+ colNum[i]
 
             if (isValid(row, col) and grid[row][col].color!=BLACK and grid[row][col] not in visited_set ):
-                temp_dist=distance[current] + 1
+                temp_dist=distance[current] + grid[row][col].distance
 
                 if temp_dist <  distance[grid[row][col]]:
                     distance[grid[row][col]]=temp_dist
