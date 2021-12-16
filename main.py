@@ -2,6 +2,7 @@
 main.py version 1.0.0
 this file will be for combining all the algorithms into one project
 '''
+import random
 
 import pygame
 import math
@@ -13,7 +14,7 @@ from queue import PriorityQueue
 import time
 import sys
 sys.path.append('./algorithms')
-from djikstra import *
+from dijkstra import *
 from astar import *
 from bfs import *
 from dfs import *
@@ -51,16 +52,25 @@ y=0
 n=20
 
 class Spot:
-    def __init__(self, x, y, col, row, width):
+    def __init__(self, x, y, col, row, width, distance):
         self.x=x
         self.y=y
         self.col=col
         self.row=row
         self.width=width
         self.color = WHITE
+        self.distance=distance
+        self.rect_obj=pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
+        self.font=pygame.font.SysFont('Arial', 15)
+
 
     def draw(self):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
+
+    def draw_text(self):
+        text_surface_object = self.font.render(str(self.distance), True, BLACK)
+        text_rect = text_surface_object.get_rect(center=self.rect_obj.center)
+        surface.blit(text_surface_object, text_rect)
 
     def make_start(self):
         self.color=red
@@ -70,7 +80,7 @@ class Spot:
 
     def make_barrier(self):
         self.color=BLACK
-        
+
     def visited_cell(self):
         self.color=dark_blue
 
@@ -93,7 +103,7 @@ def grid_make(width):
         x0=0
         grid.append([])
         for i in range(1, ROW+1):
-            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width)
+            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width, random.randint(1, 5))
             x0=gap+i
             gap=gap+width
             grid[j-1].append(spot)
@@ -106,7 +116,8 @@ def draw(win, grid):
     for row in grid:
         for spot in row:
             spot.draw()
-            
+            spot.draw_text()
+
     pygame.display.flip()
 
 '''this will get us the row and column position because
@@ -131,7 +142,7 @@ def construct_path(curr_node, from_list, start):
         else:
             t.backtrack()
             r=t
-            
+
 window=Tk()
 window.title('tutorial window')
 t=Text(window, height=30, width=52)
@@ -204,22 +215,22 @@ def leave(draw, grid, start, end):
             if col.color ==dark_blue or col.color==light_blue or col.color==light_orange:
                 col.color=WHITE
     draw()
-             
+
 def main():
     run = True
 
     start=None
     end=None
-    
+
     grid=grid_make(12)
 
     while run:
         draw(surface, grid)
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run=False
-                
+
 
             if pygame.mouse.get_pressed()[0]:
                 x, y=pygame.mouse.get_pos()
@@ -228,7 +239,7 @@ def main():
                 if not start and node!=end:
                     start=node
                     start.make_start()
-                    
+
                 if not end and node!=start:
                     end=node
                     end.make_end()
@@ -245,10 +256,9 @@ def main():
                     start=None
                 elif node==end:
                     end=None
-                    
+
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_b and start and end:
-                    pass
                     bfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
 
                 if event.key==pygame.K_c:
@@ -258,23 +268,21 @@ def main():
 
                 if event.key==pygame.K_SPACE:
                      leave(lambda: draw(surface, grid),grid, start, end)
-                    
+
                 if event.key==pygame.K_d and start and node:
-                    dijkstra(lambda: draw(surface, grid),grid, start, end, message_box, construct_path)
-                    
+                    # dijkstra(lambda: draw(surface, grid),grid, start, end, message_box, construct_path)
+                    dfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
                 if event.key==pygame.K_a and start and node:
                     pass
                     # astar(lambda: draw(surface, grid),grid, start, end)
                 if event.key == pygame.K_i and start and node:
                     pass
                 if event.key == pygame.K_u and start and node:
-                    pass
-                if event.key == pygame.K_d and start and node:
-                    pass
+                    # UCS and Dijkstra are the same
+                    dijkstra(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
     pygame.quit()
-    
+
 
 
 if __name__=="__main__":
     main()
-   
