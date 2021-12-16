@@ -2,16 +2,11 @@
 main.py version 1.0.0
 this file will be for combining all the algorithms into one project
 '''
-import random
 
 import pygame
 import math
 from tkinter import *
-from tkinter import ttk
 from tkinter import messagebox
-from collections import deque
-from queue import PriorityQueue
-import time
 import sys
 sys.path.append('./algorithms')
 from dijkstra import *
@@ -52,25 +47,16 @@ y=0
 n=20
 
 class Spot:
-    def __init__(self, x, y, col, row, width, distance):
+    def __init__(self, x, y, col, row, width):
         self.x=x
         self.y=y
         self.col=col
         self.row=row
         self.width=width
         self.color = WHITE
-        self.distance=distance
-        self.rect_obj=pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
-        self.font=pygame.font.SysFont('Arial', 15)
-
 
     def draw(self):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
-
-    def draw_text(self):
-        text_surface_object = self.font.render(str(self.distance), True, BLACK)
-        text_rect = text_surface_object.get_rect(center=self.rect_obj.center)
-        surface.blit(text_surface_object, text_rect)
 
     def make_start(self):
         self.color=red
@@ -103,7 +89,7 @@ def grid_make(width):
         x0=0
         grid.append([])
         for i in range(1, ROW+1):
-            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width, random.randint(1, 5))
+            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width)
             x0=gap+i
             gap=gap+width
             grid[j-1].append(spot)
@@ -116,7 +102,6 @@ def draw(win, grid):
     for row in grid:
         for spot in row:
             spot.draw()
-            spot.draw_text()
 
     pygame.display.flip()
 
@@ -151,14 +136,14 @@ label.config(font=("Courier", 14))
 
 text="""-----------------------------------------
  ? node Info:\n
-* Red is the Start node
-* Purple is the End node
-* Black is the Barrier node
-* Dark blue is the already visited node
-* Light blue is the currently visiting node
-* light Orange is the Path node 
+* Red is the start node
+* Purple is the end node
+* Black is a barrier node
+* Dark blue is a visited noide
+* Light blue is node that is currently being explored
+* light Orange is the path node 
 -------------------------------------------
- ? how to mark node:\n
+ ? how to mark nodes:\n
 * Right click on the cell to mark the node.
 * Left click on the cell to unmark the node.
 * The order of nodes are:
@@ -167,21 +152,12 @@ text="""-----------------------------------------
   3: Barrier node
 -------------------------------------------
  ? How to visualize algorithms:\n
-* Algorithms which are currently implemented:
-  1: BFS
-  2: Dijakstra
-  3: A star
-  4: DFS
-  5: IDS
-  6: UCS
-  
   To run-
   BFS       : press 'b'
-  Dijkstra  : press 'd'
+  Dijkstra  : press 'u'
   A* Search : press 'a'
   DFS       : press 'd'
-  IDS       : press 'i'
-  UCS       : press 'u'
+
 ---------------------------------------------
  ? Additional info:\n
 * To clear out the board :Press 'c'
@@ -268,15 +244,11 @@ def main():
 
                 if event.key==pygame.K_SPACE:
                      leave(lambda: draw(surface, grid),grid, start, end)
-
                 if event.key==pygame.K_d and start and node:
                     # dijkstra(lambda: draw(surface, grid),grid, start, end, message_box, construct_path)
                     dfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
                 if event.key==pygame.K_a and start and node:
-                    pass
-                    # astar(lambda: draw(surface, grid),grid, start, end)
-                if event.key == pygame.K_i and start and node:
-                    pass
+                    astar(lambda: draw(surface, grid),grid, start, end, construct_path, message_box)
                 if event.key == pygame.K_u and start and node:
                     # UCS and Dijkstra are the same
                     dijkstra(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
