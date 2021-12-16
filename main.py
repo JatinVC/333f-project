@@ -5,6 +5,7 @@ this file will be for combining all the algorithms into one project
 
 import pygame
 import math
+import random
 from tkinter import *
 from tkinter import messagebox
 import sys
@@ -47,16 +48,25 @@ y=0
 n=20
 
 class Spot:
-    def __init__(self, x, y, col, row, width):
+    def __init__(self, x, y, col, row, width, distance):
         self.x=x
         self.y=y
         self.col=col
         self.row=row
         self.width=width
         self.color = WHITE
+        self.distance=distance
+        self.rect_obj=pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
+        self.font=pygame.font.SysFont('Arial', 15)
+
 
     def draw(self):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
+
+    def draw_text(self):
+        text_surface_object = self.font.render(str(self.distance), True, BLACK)
+        text_rect = text_surface_object.get_rect(center=self.rect_obj.center)
+        surface.blit(text_surface_object, text_rect)
 
     def make_start(self):
         self.color=red
@@ -89,7 +99,7 @@ def grid_make(width):
         x0=0
         grid.append([])
         for i in range(1, ROW+1):
-            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width)
+            spot=Spot(x0, y0,math.trunc(x0/13),math.trunc(y0/13), width, random.randint(1, 5))
             x0=gap+i
             gap=gap+width
             grid[j-1].append(spot)
@@ -102,6 +112,7 @@ def draw(win, grid):
     for row in grid:
         for spot in row:
             spot.draw()
+            spot.draw_text()
 
     pygame.display.flip()
 
@@ -234,18 +245,16 @@ def main():
                     end=None
 
             if event.type==pygame.KEYDOWN:
-                if event.key==pygame.K_b and start and end:
-                    bfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
-
                 if event.key==pygame.K_c:
                     start=None
                     end=None
                     grid=grid_make(12)
-
                 if event.key==pygame.K_SPACE:
                      leave(lambda: draw(surface, grid),grid, start, end)
+
+                if event.key==pygame.K_b and start and end:
+                    bfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
                 if event.key==pygame.K_d and start and node:
-                    # dijkstra(lambda: draw(surface, grid),grid, start, end, message_box, construct_path)
                     dfs(lambda: draw(surface, grid), grid, start, end, message_box, construct_path)
                 if event.key==pygame.K_a and start and node:
                     astar(lambda: draw(surface, grid),grid, start, end, construct_path, message_box)
