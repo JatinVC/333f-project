@@ -1,3 +1,7 @@
+"""
+dfs.py version 1.1.0
+the algorithm for Uniform Cost Search
+"""
 import sys
 import time
 
@@ -8,38 +12,44 @@ WHITE = (255, 255, 255)
 
 
 def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
-    row_movement = [-1, 1, 0, 0]
-    col_movement = [0, 0, -1, 1]
+    print(f"The start point is at [x,y] {start_node.row}, {start_node.col}.")
+    print(f"The end point is at [x,y] {end_node.row}, {end_node.col}.")
 
-    col_1 = len(grid[1])
-    rows_1 = len(grid)
+    col = len(grid[0])
+    rows = len(grid)
 
     def is_valid(row, col):
         return (row >= 0) and (row <= 49) and (col >= 0) and (col <= 49)
 
+    # set the distance to infinity due to unknown
     distance = {col: sys.maxsize for row in grid for col in row}
     distance[start_node] = 0
     visited = []
     closed_list = {}
 
+    # below are two lists determine the movement direction
+    row_movement = [-1, 1, 0, 0]
+    col_movement = [0, 0, -1, 1]
+
     def get_min_distance(distance, visited):
         try:
             min = sys.maxsize
-            for u in distance:
-                if distance[u] < min and u not in visited and u.color != BLACK:
-                    min = distance[u]
-                    min_index = u
+            for i in distance:
+                if distance[i] < min and i not in visited and i.color != BLACK:
+                    min = distance[i]
+                    min_index = i
             return min_index
         except:
             min_index = False
             return min_index
 
-    total_nodes = col_1 * rows_1
+    total_nodes = col * rows
     state = len(visited) != total_nodes
-    while state:
 
+    while state:
         current = get_min_distance(distance, visited)
         if not current:
+            # cannot reach the goal
             warning_message_box()
             return False
 
@@ -55,17 +65,18 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
             col = current.column + col_movement[i]
 
             if is_valid(row, col) and grid[row][col].color != BLACK and grid[row][col] not in visited:
-                temp_dist = distance[current] + grid[row][col].weight
+                neighbour = grid[row][col]
+                temp_dist = distance[current] + neighbour.weight
 
-                if temp_dist < distance[grid[row][col]]:
-                    distance[grid[row][col]] = temp_dist
-
-                    closed_list[grid[row][col]] = current
-                    grid[row][col].edge_color()
+                if temp_dist < distance[neighbour]:
+                    distance[neighbour] = temp_dist
+                    closed_list[neighbour] = current
+                    neighbour.edge_color()
 
                 time.sleep(0.0005)
                 draw()
         if current != start_node:
             current.visited_node()
 
+    # cannot reach the goal
     return False

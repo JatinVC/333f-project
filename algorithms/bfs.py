@@ -1,6 +1,6 @@
 """
-bfs.py version 1.0.0
-the algorithm for breadth first Search
+bfs.py version 1.1.0
+the algorithm for Breadth First Search
 """
 import sys
 import time
@@ -13,10 +13,11 @@ WHITE = (255, 255, 255)
 
 
 def bfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
-    print(end_node.row, end_node.column)
-    col = len(grid[1])
-    rows = len(grid)
-    visited = [[False for _ in range(col)] for _ in range(rows)]
+    print(f"The start point is at [x,y] {start_node.row}, {start_node.col}.")
+    print(f"The end point is at [x,y] {end_node.row}, {end_node.col}.")
+
+    # set all nodes in the grid unvisited
+    visited = [[False for _ in range(len(grid[0]))] for _ in range(len(grid))]
     visited[start_node.row][start_node.column] = True
 
     queue = deque()
@@ -27,11 +28,11 @@ def bfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
 
     closed_list = {}  # reached nodes minus the frontier
 
+    # below are two lists determine the movement direction
     row_movement = [-1, 1, 0, 0]
     col_movement = [0, 0, -1, 1]
 
     while queue:
-
         current = queue.popleft()
 
         if current != start_node:
@@ -47,12 +48,15 @@ def bfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
             col = current.column + col_movement[i]
 
             if is_valid(row, col) and grid[row][col].color != BLACK and not visited[row][col]:
-                node = grid[row][col]
-                queue.append(node)
+                neighbour = grid[row][col]
+                closed_list[neighbour] = current
+                queue.append(neighbour)
+                neighbour.edge_color()
                 visited[row][col] = True
-                node.edge_color()
-                closed_list[node] = current
+
             time.sleep(0.00005)
             draw()
+
+    # cannot reach the goal
     warning_message_box()
     return False
