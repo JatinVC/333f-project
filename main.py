@@ -45,7 +45,7 @@ class Spot:
         self.color = WHITE
         self.weight = weight
         self.box_obj = pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
-        self.font = pygame.font.SysFont('Arial', 15)
+        self.font = pygame.font.SysFont('Arial', 14)
 
     def draw(self):
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.width))
@@ -138,7 +138,7 @@ label = Label(window, text="Find The Way: Rules and Information")
 label.config(font=("Arial", 15))
 
 rules_info_text = """
--------------------------------------------------
+---------------------------------------------------
  ? Node colors:\n
 * Red is the source
 * Purple is the goal
@@ -146,7 +146,7 @@ rules_info_text = """
 * Dark blue is a explored node
 * Light blue is a visited node
 * Light orange is the path node(s) 
--------------------------------------------------
+---------------------------------------------------
  ? How to mark nodes:\n
 * Right click on the cell to mark the node.
 * Left click on the cell to unmark the node.
@@ -154,7 +154,7 @@ rules_info_text = """
   1: Start node (the source)
   2: End node (the goal)
   3: Obstacle node
--------------------------------------------------
+---------------------------------------------------
  ? How to visualize algorithms:\n
   To run-
   A* (Astar): press key 'a'
@@ -162,11 +162,11 @@ rules_info_text = """
   DFS       : press key 'd'
   UCS       : press key 'u'
 
--------------------------------------------------
+---------------------------------------------------
  ? Additional info:\n
 * New game  : press key 'c'
 * Replay    : press key 'space bar'
--------------------------------------------------
+---------------------------------------------------
 """
 
 text.insert(END, rules_info_text)

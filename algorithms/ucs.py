@@ -24,14 +24,6 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
     closed_list = {}
 
     def get_min_distance(distance, visited):
-        #        mini=min(distance2, key=distance.get)
-
-        #        if mini not in visited and mini.color!=BLACK:
-        #            mini_index=mini
-        #        else:
-        #            print("nop")
-        #        return mini_index
-
         try:
             min = sys.maxsize
             for u in distance:
@@ -59,9 +51,6 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
             construct_path(current, closed_list, start_node)
             break
 
-        # if current!=start:
-        #     current.visited_node()
-
         for i in range(4):
             row = current.row + row_movement[i]
             col = current.column + col_movement[i]
@@ -74,8 +63,6 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
 
                     closed_list[grid[row][col]] = current
                     grid[row][col].edge_color()
-                # closed_list[grid[row][col]]=current
-                # grid[row][col].edge_color()
 
                 time.sleep(0.001)
                 draw()
