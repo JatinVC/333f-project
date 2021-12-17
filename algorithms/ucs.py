@@ -60,7 +60,7 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
             break
 
         # if current!=start:
-        #     current.visited_cell()
+        #     current.visited_node()
 
         for i in range(4):
             row = current.row + row_movement[i]
@@ -80,6 +80,6 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
                 time.sleep(0.001)
                 draw()
         if current != start_node:
-            current.visited_cell()
+            current.visited_node()
 
     return False
