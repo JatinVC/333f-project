@@ -2,14 +2,11 @@
 astar.py version 1.0.0
 the algorithm for A* Search
 """
-
 import sys
-
-# to import stuff from main.py
-sys.path.append('./')
 import time
-from collections import deque
 from queue import PriorityQueue
+
+sys.path.append('./')
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -69,7 +66,7 @@ def astar(draw, grid, start_node, end_node, construct_path, warning_message_box)
                         open_set_hash.add(node)
                         node.edge_color()
 
-                    time.sleep(0.005)
+                    time.sleep(0.0005)
                     draw()
 
             if q != start_node:

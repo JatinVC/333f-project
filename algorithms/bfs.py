@@ -2,13 +2,11 @@
 bfs.py version 1.0.0
 the algorithm for breadth first Search
 """
-
 import sys
-
-# to import stuff from main.py
-sys.path.append('./')
 import time
 from collections import deque
+
+sys.path.append('./')
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -44,18 +42,17 @@ def bfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
             construct_path(current, closed_list, start_node)
             return True
 
-        else:
-            for i in range(4):
-                row = current.row + row_movement[i]
-                col = current.column + col_movement[i]
+        for i in range(4):
+            row = current.row + row_movement[i]
+            col = current.column + col_movement[i]
 
-                if is_valid(row, col) and grid[row][col].color != BLACK and not visited[row][col]:
-                    node = grid[row][col]
-                    queue.append(node)
-                    visited[row][col] = True
-                    node.edge_color()
-                    closed_list[node] = current
-                time.sleep(0.001)
-                draw()
+            if is_valid(row, col) and grid[row][col].color != BLACK and not visited[row][col]:
+                node = grid[row][col]
+                queue.append(node)
+                visited[row][col] = True
+                node.edge_color()
+                closed_list[node] = current
+            time.sleep(0.00005)
+            draw()
     warning_message_box()
     return False
