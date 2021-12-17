@@ -12,8 +12,8 @@ WHITE = (255, 255, 255)
 
 
 def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
-    print(f"The start point is at [x,y] {start_node.row}, {start_node.col}.")
-    print(f"The end point is at [x,y] {end_node.row}, {end_node.col}.")
+    print(f"The start point is at [x,y] {start_node.row}, {start_node.column}.")
+    print(f"The end point is at [x,y] {end_node.row}, {end_node.column}.")
 
     col = len(grid[0])
     rows = len(grid)

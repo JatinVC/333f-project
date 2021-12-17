@@ -19,8 +19,8 @@ def find_h_value(v1, v2):
 
 
 def astar(draw, grid, start_node, end_node, construct_path, warning_message_box):
-    print(f"The start point is at [x,y] {start_node.row}, {start_node.col}.")
-    print(f"The end point is at [x,y] {end_node.row}, {end_node.col}.")
+    print(f"The start point is at [x,y] {start_node.row}, {start_node.column}.")
+    print(f"The end point is at [x,y] {end_node.row}, {end_node.column}.")
 
     count = 0
     open_list = PriorityQueue()

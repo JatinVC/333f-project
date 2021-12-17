@@ -12,8 +12,8 @@ WHITE = (255, 255, 255)
 
 
 def dfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
-    print(f"The start point is at [x,y] {start_node.row}, {start_node.col}.")
-    print(f"The end point is at [x,y] {end_node.row}, {end_node.col}.")
+    print(f"The start point is at [x,y] {start_node.row}, {start_node.column}.")
+    print(f"The end point is at [x,y] {end_node.row}, {end_node.column}.")
 
     # set all nodes in the grid unvisited
     visited = [[False for _ in range(len(grid[0]))] for _ in range(len(grid))]
