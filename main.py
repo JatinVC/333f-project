@@ -1,5 +1,5 @@
 """
-main.py version 1.0.0
+main.py version 1.1.0
 this file will be for combining all the algorithms into one project
 """
 
@@ -213,6 +213,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game = False
+
             # left click to mark nodes with different colors
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
@@ -228,6 +229,7 @@ def main():
 
                 elif selected_node != start_node and selected_node != end_node:
                     selected_node.set_obstacle()
+
             # right click to unmark nodes with different colors
             elif pygame.mouse.get_pressed()[2]:
                 x, y = pygame.mouse.get_pos()
