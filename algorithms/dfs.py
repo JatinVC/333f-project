@@ -31,7 +31,7 @@ Make it a normal DFS needs:
 """
 
 
-def dfs(draw, grid, start, end, message_box, construct_path):
+def dfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
     # print(f"The start point is at [x,y] {start.row}, {start.col}.")
     # print(f"The end point is at [x,y] {end.row}, {end.col}.")
 
@@ -41,8 +41,8 @@ def dfs(draw, grid, start, end, message_box, construct_path):
     # visited[start.row][start.col] = True
     # visited = [[False for i in range(len(grid[0]))] for j in range(len(grid))]
 
-    visited[start.row][start.col] = True
-    stack = [start]  # put the starting point into the stack
+    visited[start_node.row][start_node.column] = True
+    stack = [start_node]  # put the starting point into the stack
 
     # print(len(stack), stack)
 
@@ -65,16 +65,16 @@ def dfs(draw, grid, start, end, message_box, construct_path):
     while len(stack) > 0:
         print(f"stack length: {len(stack)}")
         current = stack.pop()  # stack.pop(0) work as BFS
-        if current != start:
-            current.visited_cell()
-        if current == end:
-            current.make_end()
-            construct_path(current, closed_list, start)
+        if current != start_node:
+            current.visited_node()
+        if current == end_node:
+            current.set_goal()
+            construct_path(current, closed_list, start_node)
             return True
         # else:
         for i in range(4):
             row = current.row + row_movement[i]
-            col = current.col + col_movement[i]
+            col = current.column + col_movement[i]
             if is_valid(row, col) and grid[row][col].color != BLACK and not visited[row][col]:
                 # if (isValid(row, col) and visited[row][col] != True):
                 neighbour = grid[row][col]
@@ -85,9 +85,9 @@ def dfs(draw, grid, start, end, message_box, construct_path):
 
                 # short-cut: the buggy DFS travel every second line,
                 # this trick make sure the frontier will not skip the ending point.
-                if neighbour == end:
-                    neighbour.make_end()
-                    construct_path(neighbour, closed_list, start)
+                if neighbour == end_node:
+                    neighbour.set_goal()
+                    construct_path(neighbour, closed_list, start_node)
                     return True
 
                 time.sleep(0.00003)
@@ -96,4 +96,5 @@ def dfs(draw, grid, start, end, message_box, construct_path):
         # else:
         #     stack.append(curr)
 
-    message_box()  # display error message: cannot find path! same as return False.
+    warning_message_box()  # display error message: cannot find path! same as return False.
+    return False

@@ -1,60 +1,61 @@
-'''
+"""
 bfs.py version 1.0.0
 the algorithm for breadth first Search
-'''
+"""
 
 import sys
+
 # to import stuff from main.py
 sys.path.append('./')
 import time
 from collections import deque
 
 BLACK = (0, 0, 0)
-WHITE=(255,255,255)
+WHITE = (255, 255, 255)
 
-def bfs(draw, grid, start, end, message_box, construct_path):
-    
-    print(end.row, end.col)
-    col=len(grid[1])
-    rows=len(grid)
-    visited=[[False for i in range(col)] for j in range(rows)]
-    visited[start.row][start.col]=True
 
-    queue=deque()
-    queue.append(start)
+def bfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
+    print(end_node.row, end_node.column)
+    col = len(grid[1])
+    rows = len(grid)
+    visited = [[False for _ in range(col)] for _ in range(rows)]
+    visited[start_node.row][start_node.column] = True
 
-    def isValid(row, col):
-        return (row>=0) and (row<=49) and (col>=0) and (col<=49) 
+    queue = deque()
+    queue.append(start_node)
 
-    prev={}
-    
-    rowNum=[-1, 1,0,0]
-    colNum=[0 ,0 ,-1 ,1]
-    
+    def is_valid(row, col):
+        return (row >= 0) and (row <= 49) and (col >= 0) and (col <= 49)
+
+    closed_list = {}  # reached nodes minus the frontier
+
+    row_movement = [-1, 1, 0, 0]
+    col_movement = [0, 0, -1, 1]
+
     while queue:
-                    
-        curr=queue.popleft()
-        
-        if curr!=start :
-            curr.visited_cell()
-                
-            
-        if curr==end:
-            curr.make_end()
-            construct_path(curr, prev, start)
+
+        current = queue.popleft()
+
+        if current != start_node:
+            current.visited_node()
+
+        if current == end_node:
+            current.set_goal()
+            construct_path(current, closed_list, start_node)
             return True
 
         else:
             for i in range(4):
-                row=curr.row+ rowNum[i]
-                col=curr.col+ colNum[i]
+                row = current.row + row_movement[i]
+                col = current.column + col_movement[i]
 
-                if (isValid(row, col) and grid[row][col].color!=BLACK and not visited[row][col]):
-                    node=grid[row][col]
-                    queue.append(node) 
-                    visited[row][col] =True
+                if is_valid(row, col) and grid[row][col].color != BLACK and not visited[row][col]:
+                    node = grid[row][col]
+                    queue.append(node)
+                    visited[row][col] = True
                     node.edge_color()
-                    prev[node]=curr
-                time.sleep(0.001) 
+                    closed_list[node] = current
+                time.sleep(0.001)
                 draw()
-    message_box()   
+    warning_message_box()
+    return False
