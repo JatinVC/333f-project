@@ -1,5 +1,5 @@
 """
-dfs.py version 1.1.0
+ucs.py version 1.1.0
 the algorithm for Uniform Cost Search
 """
 import sys
