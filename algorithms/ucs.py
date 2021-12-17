@@ -1,8 +1,7 @@
 import sys
-
-# to import stuff from main.py
-sys.path.append('./')
 import time
+
+sys.path.append('./')
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -64,7 +63,7 @@ def ucs(draw, grid, start_node, end_node, warning_message_box, construct_path):
                     closed_list[grid[row][col]] = current
                     grid[row][col].edge_color()
 
-                time.sleep(0.001)
+                time.sleep(0.0005)
                 draw()
         if current != start_node:
             current.visited_node()

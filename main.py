@@ -3,12 +3,13 @@ main.py version 1.0.0
 this file will be for combining all the algorithms into one project
 """
 
-import pygame
 import math
 import random
+import sys
 from tkinter import *
 from tkinter import messagebox
-import sys
+
+import pygame
 
 sys.path.append('./algorithms')
 from astar import *
@@ -19,23 +20,23 @@ from ucs import *
 ROW = 50
 COLUMN = 50
 
-# colors
+# node colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 # start and end nodes
 RED = (223, 50, 100)
 PURPLE = (107, 16, 143)
 # other nodes
+DARK_BLUE = (52, 55, 255)
 LIGHT_BLUE = (50, 173, 223)
 LIGHT_ORANGE = (255, 155, 119)
-DARK_BLUE = (52, 55, 255)
 
 pygame.init()
 surface = pygame.display.set_mode((650, 650))
 pygame.display.set_caption('Find The Way')
 
 
-class Spot:
+class Point:
     def __init__(self, x, y, column, row, width, weight):
         self.x = x
         self.y = y
@@ -77,6 +78,8 @@ class Spot:
         self.color = WHITE
 
 
+# build the grid of window size, the looping is
+# for creating all rows and columns of small squares inside the grid
 def make_grid(width):
     grid = []
     y0 = 0
@@ -86,10 +89,10 @@ def make_grid(width):
         x0 = 0
         grid.append([])
         for i in range(1, ROW + 1):
-            spot = Spot(x0, y0, math.trunc(x0 / 13), math.trunc(y0 / 13), width, random.randint(1, 5))
+            point = Point(x0, y0, math.trunc(x0 / 13), math.trunc(y0 / 13), width, random.randint(1, 5))
             x0 = gap + i
             gap = gap + width
-            grid[j - 1].append(spot)
+            grid[j - 1].append(point)
         y0 = n + j
         n = n + width
     return grid
@@ -105,15 +108,17 @@ def draw(grid_lines, grid):
     pygame.display.flip()
 
 
-'''this will get us the row and column position because
-total width is 650. and number of row and column is 50.
-650/50=13 .so you can always adjust the number of column and rows by changing
-some values like down here. Always keep in mind, if you want
-to change the width and height by some number, then multiply it with 13 and 
-give the final value as the window size, because 13 is the default size after 
-adding the spacing etc of the cell here.'''
+"""
+The window size is of total width 650.
+It has 50 rows and 50 columns (a grid of N*N, N is 50 here).
+13 is given by total width divided by N
+650 / 50 = 13
+N and window can be adjusted 
+to change the number of rows and columns.
+"""
 
 
+# use with mouse to get the clicked position
 def get_position(x, y):
     column = math.trunc(x / 13)
     row = math.trunc(y / 13)
@@ -149,22 +154,19 @@ rules_info_text = """
 * Light orange is the path node(s) 
 ---------------------------------------------------
  ? How to mark nodes:\n
-* Right click on the cell to mark the node.
-* Left click on the cell to unmark the node.
+* Right click on the node to mark it.
+* Left click on the node to unmark it.
 * The order of marking nodes:
   1: Start node (the source)
   2: End node (the goal)
-  3: Obstacle node
+  3: Obstacle node(s)
 ---------------------------------------------------
- ? How to visualize algorithms:\n
-  To run-
+ ? How to find the path:\n
   A* (Astar): press key 'a'
   BFS       : press key 'b'
   DFS       : press key 'd'
   UCS       : press key 'u'
-
----------------------------------------------------
- ? Additional info:\n
+  *********************************
 * New game  : press key 'c'
 * Replay    : press key 'space bar'
 ---------------------------------------------------
@@ -185,7 +187,7 @@ mainloop()
 def warning_message_box():
     Tk().wm_withdraw()
     messagebox.showinfo("Error: path not found",
-                        "Failed to find a path from the source to the goal.\n Perhaps it is blocked by obstacles... ")
+                        "Failed to find a path from the source to the goal.\nPerhaps it is blocked by obstacles... ")
 
 
 # replay the game again with the same source, goal, random weights, and obstacles.
@@ -202,19 +204,17 @@ def replay(draw, grid, start_node, end_node):
 
 
 def main():
-    run = True
-
+    game = True
     start_node, end_node = None, None
-
     grid = make_grid(12)
 
-    while run:
+    while game:
         draw(surface, grid)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
-
+                game = False
+            # left click to mark nodes with different colors
             if pygame.mouse.get_pressed()[0]:
                 x, y = pygame.mouse.get_pos()
                 column, row = get_position(x, y)
@@ -229,7 +229,7 @@ def main():
 
                 elif selected_node != start_node and selected_node != end_node:
                     selected_node.set_obstacle()
-
+            # right click to unmark nodes with different colors
             elif pygame.mouse.get_pressed()[2]:
                 x, y = pygame.mouse.get_pos()
                 column, row = get_position(x, y)
@@ -240,6 +240,8 @@ def main():
                 elif selected_node == end_node:
                     end_node = None
 
+            # supported keys to perform different searching algorithms
+            # and start a new game, or replay a game
             if event.type == pygame.KEYDOWN:
                 # press key 'c' to start a new game
                 if event.key == pygame.K_c:

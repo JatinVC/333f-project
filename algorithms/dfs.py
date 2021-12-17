@@ -90,7 +90,7 @@ def dfs(draw, grid, start_node, end_node, warning_message_box, construct_path):
                     construct_path(neighbour, closed_list, start_node)
                     return True
 
-                time.sleep(0.00003)
+                time.sleep(0.0005)
                 draw()
                 # break  # this will make stack length always 1, hence cannot backtrack to continue DFS
         # else:
